@@ -23,8 +23,7 @@
     ],
     "main": "./core/index",
     "scripts": {
-        "start": "node index",
-        "test": "./node_modules/.bin/grunt validate --verbose"
+        "deploy": "./deploy-ghpages.sh"
     },
     "engines": {
         "node": "~0.10.0"
