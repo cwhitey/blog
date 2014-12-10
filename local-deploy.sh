@@ -3,6 +3,8 @@
 #Assumes Buster is installed with PIP, we're in the /blog/ repo
 #and there is a ../cwhitey.github.io/ repo checked out
 
+git add content/*;
+git commit -m "$1";
 cd ../;
 rm -rf static/;
 buster setup --gh-repo="http://cwhitey.github.io";
