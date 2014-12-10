@@ -23,6 +23,7 @@
     ],
     "main": "./core/index",
     "scripts": {
+        "start": "node index",
         "deploy": "./deploy-ghpages.sh"
     },
     "engines": {
