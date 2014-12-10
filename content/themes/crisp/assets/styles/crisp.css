@@ -134,10 +134,11 @@ header h1 {
 	margin-bottom:0.6em;
 }
 header h1 a {
-	color:#444;
+	color:#444444;
 }
 header h1 a:hover {
-	text-decoration:none;
+        text-decoration:none;
+    	color: #4D94FF;
 }
 header #logo img {
 	width:9em;
