@@ -153,7 +153,7 @@ header #logo img {
 	margin-bottom: 1.5em;
 }
 #follow-icons a {
-	color: #ccc;
+    color: #cccccc;
 }
 #follow-icons span {
 	vertical-align:top;
@@ -164,6 +164,10 @@ header #logo img {
 	font-size:1.05em;
 	line-height:1.9em;
 }
+#follow-icons a:hover {
+        color: #a1a1a1
+}
+
 header h6 {
 	margin-top:0.5em;
 }
