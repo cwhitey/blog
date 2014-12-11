@@ -11,7 +11,7 @@ buster generate --domain="localhost:2368";
 cp -R static/* cwhitey.github.io/;
 cd cwhitey.github.io/;
 git add --all;
-git commit -m "Updated GitHub Pages";
+git commit -m "$1";
 echo "";
 echo "FORCE PUSHING TO GITHUB PAGES...";
 git push --force;
