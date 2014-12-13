@@ -150,7 +150,7 @@ header #logo img {
 }
 #follow-icons {
 	font-size: 0.9em;
-	margin-top: -0.7em;
+	margin-top: -0.4em;
 	margin-bottom: 1.5em;
 }
 #follow-icons a {
@@ -184,8 +184,11 @@ h3.post-title {
 	margin-top:0.4em;
 	padding-bottom:0.9em;
 	border-bottom: 1px solid #eee;
-	font-size: 1.2em;
+	font-size: 1.1em;
 	color: #444;
+}
+.post-title .date {
+        font-size: 0.8em;
 }
 .post-title .feature-star {
 	font-size: 0.9em;
@@ -194,9 +197,8 @@ h3.post-title {
 	color: #ccc;
 }
 .taglist a {
-	background-color:#ccc;
-	color:#fff;
-	padding:0.3em 0.6em 0.3em 0.6em;
+	color:#cccccc;
+	padding:0.3em 0.3em 0.3em 0.3em;
 	vertical-align:10%;
 	font-size:0.5em;
 	font-family: "Open Sans", sans-serif;
@@ -206,6 +208,10 @@ h3.post-title {
 	border-radius:0.25em;
 	-moz-border-radius: 0.25em;
 	-webkit-border-radius: 0.25em;
+}
+.taglist a:hover{
+    color:#a1a1a1;
+    text-decoration:none;
 }
 #social-bar {
 	margin-top:1.5em;
