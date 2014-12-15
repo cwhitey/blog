@@ -4,7 +4,7 @@
 }
 /* Basic Typography */
 html, body {
-	font-size: 1em;
+	font-size: 0.8em;
 	line-height: 1.65em;
 	font-family: "Open Sans", sans-serif;
 	font-weight: 300;
@@ -108,20 +108,23 @@ ul, ol {
 	margin-left: 3em;
 }
 code {
-	font-size:1.2em;
-	background: #eee;
+	font-size:1.0em;
+	background: #eeeeee;
 }
 pre {
 	font-size: 0.8em;
 	line-height: 2em;
-	background: #eee;
-	padding: 1em;
+	background: #eeeeee;
+	padding: 0.2em;
+        padding-left: 0.4em;
 	word-break: break-all;
 	word-wrap: break-word;
 	white-space: pre;
 	white-space: -moz-pre-wrap;
 	white-space: pre-wrap;
 	white-space: pre\9;
+	-moz-border-radius: 0.25em;
+	-webkit-border-radius: 0.25em;
 }
 input {
 	font-size:1em;
