@@ -1,10 +1,18 @@
 #!/bin/bash
-#Assumes ghost is running on localhost:2368
-#Assumes Buster is installed with PIP, we're in the /blog/ repo
-#and there is a ../cwhitey.github.io/ repo checked out
+#Assumes:
+#  * Ghost is running on localhost:2368 (by running npm start)
+#  * Buster is installed with PIP
+#  * we're in the /blog/ repo
+#  * there is a ../cwhitey.github.io/ repo checked out
 
+if [ "$#" == "0" ]; then
+    echo "Usage:"
+    echo "  ./local-deploy.sh [commit-msg]"
+    exit 1;
+fi
 git add content/*;
 git commit -m "$1";
+git push;
 cd ../;
 rm -rf static/;
 buster setup --gh-repo="http://cwhitey.github.io";
