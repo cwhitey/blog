@@ -110,6 +110,7 @@ ul, ol {
 code {
 	font-size:1.0em;
 	background: #eeeeee;
+        white-space: pre-wrap;
 }
 pre {
 	font-size: 0.8em;
