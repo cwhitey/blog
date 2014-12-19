@@ -158,7 +158,7 @@ header #logo img {
 	margin-bottom: 1.5em;
 }
 #follow-icons a {
-    color: #cccccc;
+        color: #cccccc;
 }
 #follow-icons span {
 	vertical-align:top;
@@ -173,12 +173,16 @@ header #logo img {
         color: #a1a1a1
 }
 
+#follow-icons a:active {
+        color: #a1a1a1
+}
+
 header h6 {
 	margin-top:0.5em;
 }
 /* Posts */
 article span.post-stamp {
-	color:#888;
+	color:#888888;
 }
 h1.post-title {
 	margin-top:0.35em;
