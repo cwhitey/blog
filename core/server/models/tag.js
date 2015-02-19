@@ -1,13 +1,40 @@
 var _              = require('lodash'),
+    Promise        = require('bluebird'),
     errors         = require('../errors'),
     ghostBookshelf = require('./base'),
+    sitemap        = require('../data/sitemap'),
 
     Tag,
     Tags;
 
+function addPostCount(options, obj) {
+    if (options.include && options.include.indexOf('post_count') > -1) {
+        obj.query('select', 'tags.*');
+        obj.query('count', 'posts_tags.id as post_count');
+        obj.query('leftJoin', 'posts_tags', 'tag_id', 'tags.id');
+        obj.query('groupBy', 'tag_id', 'tags.id');
+
+        options.include = _.pull([].concat(options.include), 'post_count');
+    }
+}
+
 Tag = ghostBookshelf.Model.extend({
 
     tableName: 'tags',
+
+    initialize: function () {
+        ghostBookshelf.Model.prototype.initialize.apply(this, arguments);
+
+        this.on('created', function (model) {
+            sitemap.tagAdded(model);
+        });
+        this.on('updated', function (model) {
+            sitemap.tagEdited(model);
+        });
+        this.on('destroyed', function (model) {
+            sitemap.tagDeleted(model);
+        });
+    },
 
     saving: function (newPage, attr, options) {
          /*jshint unused:false*/
@@ -54,12 +81,35 @@ Tag = ghostBookshelf.Model.extend({
 
         return options;
     },
+
+    /**
+     * ### Find One
+     * @overrides ghostBookshelf.Model.findOne
+     */
+    findOne: function (data, options) {
+        options = options || {};
+
+        options = this.filterOptions(options, 'findOne');
+        data = this.filterData(data, 'findOne');
+
+        var tag = this.forge(data);
+
+        addPostCount(options, tag);
+
+        // Add related objects
+        options.withRelated = _.union(options.withRelated, options.include);
+
+        return tag.fetch(options);
+    },
+
     findPage: function (options) {
         options = options || {};
 
-        var tagCollection = Tags.forge();
+        var tagCollection = Tags.forge(),
+            collectionPromise,
+            qb;
 
-        if (options.limit) {
+        if (options.limit && options.limit !== 'all') {
             options.limit = parseInt(options.limit, 10) || 15;
         }
 
@@ -75,30 +125,29 @@ Tag = ghostBookshelf.Model.extend({
             where: {}
         }, options);
 
-        return tagCollection
-            .query('limit', options.limit)
-            .query('offset', options.limit * (options.page - 1))
-            .fetch(_.omit(options, 'page', 'limit'))
-        // Fetch pagination information
-        .then(function () {
-            var qb,
-                tableName = _.result(tagCollection, 'tableName'),
-                idAttribute = _.result(tagCollection, 'idAttribute');
+        // only include a limit-query if a numeric limit is provided
+        if (_.isNumber(options.limit)) {
+            tagCollection
+                .query('limit', options.limit)
+                .query('offset', options.limit * (options.page - 1));
+        }
 
-            // After we're done, we need to figure out what
-            // the limits are for the pagination values.
-            qb = ghostBookshelf.knex(tableName);
+        addPostCount(options, tagCollection);
 
-            if (options.where) {
-                qb.where(options.where);
-            }
+        collectionPromise = tagCollection.fetch(_.omit(options, 'page', 'limit'));
 
-            return qb.count(tableName + '.' + idAttribute + ' as aggregate');
-        })
-        // Format response of data
-        .then(function (resp) {
-            var totalTags = parseInt(resp[0].aggregate, 10),
-                calcPages = Math.ceil(totalTags / options.limit),
+        // Find total number of tags
+
+        qb = ghostBookshelf.knex('tags');
+
+        if (options.where) {
+            qb.where(options.where);
+        }
+
+        return Promise.join(collectionPromise, qb.count('tags.id as aggregate')).then(function (results) {
+            var totalTags = results[1][0].aggregate,
+                calcPages = Math.ceil(totalTags / options.limit) || 0,
+                tagCollection = results[0],
                 pagination = {},
                 meta = {},
                 data = {};
